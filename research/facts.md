@@ -16,3 +16,13 @@ source: https://gstcouncil.gov.in/sites/default/files/e-version-gst-flyers/Regis
 - threshold: services / mixed -> aggregate turnover 20L (10L in Manipur, Mizoram, Nagaland, Tripura); goods-only 40L (20L in listed special states).
 - small suppliers of services below 20/10L exempt from registration even for inter-state supply (Notification 10/2017-Integrated Tax, 13-10-2017). source copy: https://gstcouncil.gov.in/sites/default/files/Agenda/Table%20Agenda%20Note%20No-1.pdf ; notification text mirror: https://gstgyaan.com/pdf/Notification-No-10-2017-Integrated-Tax-dated-13-10-2017.pdf (need official cbic copy)
 - TODO: CGST s.2(6) aggregate turnover includes exports; IGST s.2(6) export of services conditions; IGST s.16 zero-rated + LUT (CGST rule 96A); place of supply s.13 IGST.
+
+# GST law (current text from CBIC tax repository)
+- CGST s.2(6) aggregate turnover INCLUDES exports of goods or services, all-India per PAN, excl. taxes. (CBIC CGST Act updated copy https://cbic-gst.gov.in/pdf/CGST-Act-Updated-30092020.pdf)
+- CGST s.22(1): register if aggregate turnover in FY exceeds 20 lakh (10L special category proviso; 40L goods-only proviso by notification).
+- IGST s.2(6) export of services: supplier in India; recipient outside India; place of supply outside India; payment in convertible foreign exchange [or in INR wherever permitted by RBI - inserted by amendment]; not merely establishments of a distinct person. https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_IGST_Act/active/chapteri/section2_v1.00.html
+  - CONFLICT: old 2017 copies (e.g. gstcouncil IGST.pdf) show only convertible foreign exchange.
+- IGST s.16(3) (substituted by FA 2021, in force 1 Oct 2023 via Notif 27/2023-CT): zero-rated supply WITHOUT payment of IGST under bond/LUT, refund of unutilised ITC. Pay-IGST-and-refund route only for classes notified under s.16(4). https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/acts/2017_IGST_Act/active/chaptervii/section16_v1.00.html
+  - CONFLICT: many blogs still describe the pre-Oct-2023 two-option choice (LUT OR pay IGST + refund) as open to everyone.
+- LUT: CGST rule 96A, Form GST RFD-11, furnished per financial year. https://taxinformation.cbic.gov.in/content/html/tax_repository/gst/rules/cgst_rules/active/chapter10/rule96a_v1.00.html ; CBIC master circular on LUT https://cbic-gst.gov.in/pdf/Final_Master_circular_LUT_Bond_04102017.pdf
+- Circular 78/52/2018-GST (31 Dec 2018) export of services clarifications https://cbic-gst.gov.in/pdf/Circular_78-52-2018_Export_Services.pdf
