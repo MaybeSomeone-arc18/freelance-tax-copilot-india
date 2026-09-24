@@ -1,0 +1,16 @@
+{
+  "name": "freelance-tax-copilot-agent",
+  "private": true,
+  "scripts": { "dev": "next dev", "build": "next build", "start": "next start" },
+  "dependencies": {
+    "next": "16.3.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "ai": "7.0.113",
+    "@ai-sdk/mcp": "2.0.57",
+    "@ai-sdk/google": "4.0.79",
+    "@ai-sdk/react": "4.0.116",
+    "@sanity/client": "8.7.0"
+  },
+  "devDependencies": { "typescript": "^5", "@types/react": "^19", "@types/node": "^22" }
+}
