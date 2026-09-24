@@ -1,4 +1,4 @@
-# verified facts (ITA 2025 as amended by FA 2026) - extracted from studycafe mirror; MUST re-check vs official incometaxindia PDF before seeding
+# verified facts (ITA 2025 as amended by FA 2026). extracted first from a studycafe mirror, then re-checked on 25 Sep 2026 against the official incometaxindia PDF (sha256 d54a0ed6a91673d1a4fbcef9b5e472c3efe441139fae38f85a5a0c5b2cfc998b): s.58 Sl.3, s.62(4), s.156, s.202 slabs, s.393(1) Sl.6, s.404, s.408 all match.
 official url: https://www.incometaxindia.gov.in/documents/d/guest/income_tax_act_2025_as_amended_by_fa_act_2026-pdf (curl blocked, use browser)
 - In force 1 Apr 2026 (tax year FY 2026-27 onward). Replaces ITA 1961.
 - s.58(2) Table Sl.3: specified profession (s.62(4)) by specified assessee; gross receipts <= 50L, or <= 75L if cash receipts <= 5% of gross receipts; deemed profit 50% of gross receipts or actual, whichever higher. (old 44ADA)

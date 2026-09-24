@@ -6,6 +6,8 @@ export const maxDuration = 60
 
 const MCP_URL = process.env.SANITY_CONTEXT_MCP_URL!
 const TOKEN = process.env.SANITY_API_TOKEN!
+const KB_URL = process.env.SANITY_CONTEXT_KB_MCP_URL
+const KB_TOKEN = process.env.SANITY_CONTEXT_TOKEN
 
 let cachedContext: {text: string; at: number} | null = null
 async function initialContext() {
@@ -29,19 +31,32 @@ Hard rules:
 
 export async function POST(req: Request) {
   const {messages}: {messages: UIMessage[]} = await req.json()
-  const [mcp, ctx] = await Promise.all([
+  const [mcp, kb, ctx] = await Promise.all([
     createMCPClient({transport: {type: 'http', url: MCP_URL, headers: {Authorization: `Bearer ${TOKEN}`}}}),
+    KB_URL && KB_TOKEN
+      ? createMCPClient({transport: {type: 'http', url: KB_URL, headers: {Authorization: `Bearer ${KB_TOKEN}`}}})
+      : Promise.resolve(null),
     initialContext(),
   ])
-  const {initial_context: _ignored, ...tools} = await mcp.tools()
+  const {initial_context: _ignored, ...datasetTools} = await mcp.tools()
+  let kbTools = {}
+  let kbOutline = ''
+  if (kb) {
+    const {initial_context: kbInit, ...rest} = await kb.tools()
+    kbTools = rest
+    const r = await fetch(`${KB_URL}/initial-context`, {headers: {Authorization: `Bearer ${KB_TOKEN}`}})
+    kbOutline = r.ok ? await r.text() : ''
+  }
+  const tools = {...datasetTools, ...kbTools}
+  const closeAll = async () => { await mcp.close(); if (kb) await kb.close() }
   const result = streamText({
     model: google(process.env.GEMINI_MODEL || 'gemini-2.5-flash'),
-    system: `${BASE_PROMPT}\n\n## Dataset schema and context\n${ctx}`,
+    system: `${BASE_PROMPT}\n\n## Dataset schema and context\n${ctx}${kbOutline ? `\n\n## Knowledge base (prose entries built from official Acts, CBIC circulars and the dataset; use knowledge_base_read for explanations, groq_query for exact structured facts)\n${kbOutline}` : ''}`,
     messages: await convertToModelMessages(messages),
     tools,
     stopWhen: stepCountIs(8),
-    onFinish: async () => { await mcp.close() },
-    onError: async () => { await mcp.close() },
+    onFinish: closeAll,
+    onError: closeAll,
   })
   return result.toUIMessageStreamResponse()
 }
