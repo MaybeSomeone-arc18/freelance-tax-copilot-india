@@ -14,7 +14,7 @@ official url: https://www.incometaxindia.gov.in/documents/d/guest/income_tax_act
 # GST (verified from GST Council flyer "Registration under GST Law")
 source: https://gstcouncil.gov.in/sites/default/files/e-version-gst-flyers/Registration_under_GST_Law_new.pdf
 - threshold: services / mixed -> aggregate turnover 20L (10L in Manipur, Mizoram, Nagaland, Tripura); goods-only 40L (20L in listed special states).
-- small suppliers of services below 20/10L exempt from registration even for inter-state supply (Notification 10/2017-Integrated Tax, 13-10-2017). source copy: https://gstcouncil.gov.in/sites/default/files/Agenda/Table%20Agenda%20Note%20No-1.pdf ; notification text mirror: https://gstgyaan.com/pdf/Notification-No-10-2017-Integrated-Tax-dated-13-10-2017.pdf (need official cbic copy)
+- small suppliers of services below 20/10L exempt from registration even for inter-state supply (Notification 10/2017-Integrated Tax, 13-10-2017). source copy: https://gstcouncil.gov.in/sites/default/files/Agenda/Table%20Agenda%20Note%20No-1.pdf ; third-party mirror (NOT official, not used in dataset): https://gstgyaan.com/pdf/Notification-No-10-2017-Integrated-Tax-dated-13-10-2017.pdf (need official cbic copy)
 - TODO: CGST s.2(6) aggregate turnover includes exports; IGST s.2(6) export of services conditions; IGST s.16 zero-rated + LUT (CGST rule 96A); place of supply s.13 IGST.
 
 # GST law (current text from CBIC tax repository)
