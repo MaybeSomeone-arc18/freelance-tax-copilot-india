@@ -54,7 +54,7 @@ export async function POST(req: Request) {
   const tools = {...datasetTools, ...kbTools}
   const closeAll = async () => { await mcp.close(); if (kb) await kb.close() }
   const result = streamText({
-    model: google(process.env.GEMINI_MODEL || 'gemini-2.5-flash'),
+    model: google(process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite'),
     system: `${BASE_PROMPT}\n\n## Dataset schema and context\n${ctx}${kbOutline ? `\n\n## Knowledge base (prose entries built from official Acts, CBIC circulars and the dataset; use knowledge_base_read for explanations, groq_query for exact structured facts)\n${kbOutline}` : ''}`,
     messages: await convertToModelMessages(messages),
     tools,
