@@ -62,5 +62,12 @@ export async function POST(req: Request) {
     onFinish: closeAll,
     onError: closeAll,
   })
-  return result.toUIMessageStreamResponse()
+  return result.toUIMessageStreamResponse({
+    onError: (e) => {
+      const msg = e instanceof Error ? e.message : String(e)
+      console.error('chat error', msg)
+      if (/quota|rate|429|exhausted/i.test(msg)) return 'the model is rate-limited right now - try again in a minute.'
+      return 'error: ' + msg.slice(0, 200)
+    },
+  })
 }
