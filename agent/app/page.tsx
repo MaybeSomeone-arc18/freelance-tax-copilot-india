@@ -16,9 +16,13 @@ const EXAMPLES = [
 function citationMatchesSource(label: string, url: string) {
   const is1961 = /(?:ITA|Income.tax Act)\s*1961/i.test(label)
   const is2025 = /(?:ITA|Income.tax Act)\s*2025/i.test(label)
+  const isCGST = /\bCGST\b|Central Goods and Services Tax/i.test(label)
+  const isIGST = /\bIGST\b|Integrated Goods and Services Tax/i.test(label)
   const path = decodeURIComponent(url).toLowerCase()
   if (is1961 && /income[_-]?tax[_-]?act[_-]?2025|ita[_-]?2025/.test(path)) return false
   if (is2025 && /income[_-]?tax[_-]?act[_-]?1961|ita[_-]?1961/.test(path)) return false
+  if (isCGST && /igst[-_]?act|2017_igst_act/.test(path)) return false
+  if (isIGST && /cgst[-_]?act|2017_cgst_act/.test(path)) return false
   return true
 }
 
