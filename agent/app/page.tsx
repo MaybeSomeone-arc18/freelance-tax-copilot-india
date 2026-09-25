@@ -44,6 +44,15 @@ function Answer({text}: {text: string}) {
 
 export default function Page() {
   const [input, setInput] = useState('')
+  const [progress, setProgress] = useState(0)
+  const heroRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const onScroll = () => setProgress(Math.min(100, window.scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight) * 100))
+    onScroll(); addEventListener('scroll', onScroll, {passive: true})
+    const io = new IntersectionObserver(entries => entries.forEach(entry => {if (entry.isIntersecting) {entry.target.classList.add('in-view'); io.unobserve(entry.target)}}), {threshold: .12})
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el))
+    return () => {removeEventListener('scroll', onScroll); io.disconnect()}
+  }, [])
   const {messages, sendMessage, status, error} = useChat({transport})
   const bottomRef = useRef<HTMLDivElement>(null)
   const busy = status === 'submitted' || status === 'streaming'
@@ -51,19 +60,23 @@ export default function Page() {
   const send = (text: string) => { if (!text.trim() || busy) return; sendMessage({text: text.trim()}); setInput('') }
 
   return <main className="shell">
+    <div className="scroll-progress" style={{transform: `scaleX(${progress / 100})`}} aria-hidden="true" />
     <header className="topbar">
       <div className="brand"><span className="brand-mark">§</span><span>freelance<span className="brand-muted">/</span>tax</span></div>
       <div className="top-right"><span className="status-dot" /> SOURCED ANSWERS <span className="top-divider" /> INDIA</div>
     </header>
 
-    <section className="hero">
-      <div className="eyebrow"><span className="eyebrow-line" /> AN AGENT BUILT ON REAL TAX CONTENT</div>
-      <h1>Tax answers that <em>show their work.</em></h1>
+    <section className="hero" ref={heroRef} onPointerMove={e => {const b = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty('--mx', `${(e.clientX-b.left)/b.width*100}%`); e.currentTarget.style.setProperty('--my', `${(e.clientY-b.top)/b.height*100}%`)}}>
+      <div className="hero-content"><div className="eyebrow"><span className="eyebrow-line" /> REAL LAW. REAL SOURCES. NO GUESSWORK.</div>
+      <h1>The law moved.<br/><em>Get the right</em><br/>answer<span className="period">.</span></h1>
       <p>The 2025 Income-tax Act changed section numbers for tax year 2026-27. Old advice still points to the 1961 Act. This working agent checks the right year and queries real tax content in Sanity before answering, with links back to official sources.</p>
-      <div className="hero-pills"><span>Income-tax Act, 2025</span><span>1961 → 2025 mapping</span><span>GST &amp; CBIC</span></div>
+      <div className="hero-bottom"><a href="#try-it" className="hero-cta">TRY THE LIVE AGENT <span>↗</span></a><span className="hero-note">BUILT WITH SANITY CONTEXT · INDIA</span></div></div>
+      <div className="hero-visual" aria-label="Example of an old tax section mapped to the 2025 Act"><div className="orbit orbit-a"/><div className="orbit orbit-b"/><div className="orbit orbit-c"/><div className="orbit-center"><span>THE SECTION SHIFT</span><div className="mapping"><span className="old-section">44ADA <small>1961 ACT</small></span><span className="mapping-arrow">→</span><span className="new-section">58 <small>2025 ACT</small></span></div><div className="mapping-line"/><p>Same question.<br/>A different law.</p></div><span className="orbit-label orbit-label-a">TAX YEAR / 2026-27</span><span className="orbit-label orbit-label-b">SOURCE VERIFIED ✳</span></div>
     </section>
 
-    <section className="workspace" aria-label="Tax copilot">
+    <div className="marquee" aria-hidden="true"><div className="marquee-track">SOURCE FIRST <i>✳</i> OLD LAW → NEW LAW <i>✳</i> VERIFIED SECTIONS <i>✳</i> SANITY CONTEXT <i>✳</i> SOURCE FIRST <i>✳</i> OLD LAW → NEW LAW <i>✳</i> VERIFIED SECTIONS <i>✳</i> SANITY CONTEXT <i>✳</i></div></div>
+    <div className="section-intro reveal"><span>01 / THE EXPERIENCE</span><p>Don't take our word for it.<br/><em>Ask the law.</em></p></div>
+    <section className="workspace reveal" id="try-it" aria-label="Tax copilot">
       <div className="workspace-head"><div><span className="workspace-kicker">THE COPILOT</span><h2>Start with a real question</h2></div><span className="workspace-number">01 / LIVE DEMO</span></div>
       {messages.length === 0 && <div className="examples"><div className="examples-label">TRY A QUESTION <span>↘</span></div><div className="example-grid">{EXAMPLES.map(e => <button className="example" key={e.icon} type="button" disabled={busy} onClick={() => send(e.question)}><span className="example-top"><span className="example-number">{e.icon}</span><span className="example-arrow">↗</span></span><strong>{e.label}</strong><span className="example-question">{e.question}</span></button>)}</div></div>}
       {messages.length > 0 && <div className="conversation" aria-live="polite">{messages.map(m => <div key={m.id} className={`message ${m.role === 'user' ? 'question-message' : 'agent-message'}`}><div className="message-label">{m.role === 'user' ? 'YOUR QUESTION' : <><span className="answer-spark">✳</span> SOURCED ANSWER</>}</div>{m.parts.map((part, i) => {
@@ -80,7 +93,7 @@ export default function Page() {
       <p className="input-note">Built for questions, not filings. Verify important decisions with a qualified tax professional.</p>
     </section>
 
-    <section className="method"><div className="method-title"><span className="eyebrow">BEHIND EACH ANSWER</span><h2>No mystery citations.</h2></div><div className="method-steps"><div><span>01 / RETRIEVE</span><strong>Query real content</strong><p>Structured provisions and source documents in Sanity, not a generic chatbot memory.</p></div><div><span>02 / RESOLVE</span><strong>Check what changed</strong><p>Tax year, old-to-new section mapping, and conflicting rules get checked before the answer.</p></div><div><span>03 / CITE</span><strong>Open the source</strong><p>Answers point to the statute section and official document where available.</p></div></div></section>
+    <section className="method reveal"><div className="method-title"><span className="eyebrow">BEHIND EACH ANSWER</span><h2>From question<br/>to <em>source.</em></h2></div><div className="method-steps"><div><span>01 / RETRIEVE</span><strong>Query real content</strong><p>Structured provisions and source documents in Sanity, not a generic chatbot memory.</p></div><div><span>02 / RESOLVE</span><strong>Check what changed</strong><p>Tax year, old-to-new section mapping, and conflicting rules get checked before the answer.</p></div><div><span>03 / CITE</span><strong>Open the source</strong><p>Answers point to the statute section and official document where available.</p></div></div></section>
     <footer><span>FREELANCE / TAX · INDIA</span><span>An open-source Sanity Challenge project · Informational only</span><a href="https://github.com/MaybeSomeone-arc18/freelance-tax-copilot-india" target="_blank" rel="noopener noreferrer">View the code ↗</a></footer>
   </main>
 }
