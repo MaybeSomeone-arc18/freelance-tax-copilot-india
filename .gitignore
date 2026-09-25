@@ -7,3 +7,5 @@ dist
 sources/
 notes/
 sources/
+.vercel
+.env*

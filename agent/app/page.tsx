@@ -7,7 +7,7 @@ import {useEffect, useRef, useState} from 'react'
 const transport = new DefaultChatTransport({api: '/api/chat'})
 
 const EXAMPLES = [
-  {label: 'Old law, new section', question: 'I earn $40k/yr from a US client as a freelance dev. Can I use 44ADA for tax year 2026-27?', icon: '01'},
+  {label: 'Old law, new section', question: 'I earn $40k/yr from a US client as a freelance dev. What would determine whether I can use 44ADA for tax year 2026-27?', icon: '01'},
   {label: 'Export of services', question: 'Do I need GST registration if all my clients are abroad?', icon: '02'},
   {label: 'Payment dates', question: 'When are advance tax instalments due and what if I use presumptive taxation?', icon: '03'},
   {label: 'TDS renumbering', question: 'Is 194J still the TDS section for professional fees?', icon: '04'},
@@ -19,7 +19,10 @@ function citationMatchesSource(label: string, url: string) {
   const isCGST = /\bCGST\b|Central Goods and Services Tax/i.test(label)
   const isIGST = /\bIGST\b|Integrated Goods and Services Tax/i.test(label)
   const path = decodeURIComponent(url).toLowerCase()
-  if (is1961 && /income[_-]?tax[_-]?act[_-]?2025|ita[_-]?2025/.test(path)) return false
+  // Historical references need an independently verified 1961 Act source; this dataset has none.
+  if (is1961) return false
+  // An income-tax citation is safe to click only when it names the official seeded 2025 PDF exactly.
+  if (is2025 && path !== 'https://www.incometaxindia.gov.in/documents/d/guest/income_tax_act_2025_as_amended_by_fa_act_2026-pdf') return false
   if (is2025 && /income[_-]?tax[_-]?act[_-]?1961|ita[_-]?1961/.test(path)) return false
   if (isCGST && /igst[-_]?act|2017_igst_act/.test(path)) return false
   if (isIGST && /cgst[-_]?act|2017_cgst_act/.test(path)) return false
