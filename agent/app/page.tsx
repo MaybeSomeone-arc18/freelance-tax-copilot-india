@@ -32,10 +32,6 @@ function Inline({text}: {text: string}) {
     const markdown = token.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/)
     if (markdown && isSafeUrl(markdown[2]) && citationMatchesSource(markdown[1], markdown[2])) return <a key={i} href={markdown[2]} target="_blank" rel="noopener noreferrer">{markdown[1]}<span className="external" aria-hidden="true">↗</span></a>
     if (markdown) return <span key={i}>{markdown[1]}</span>
-    if (/^https?:\/\//.test(token)) {
-      const clean = token.replace(/[.,;]+$/, '')
-      if (isSafeUrl(clean)) return <span key={i}><a href={clean} target="_blank" rel="noopener noreferrer">{clean.replace(/^https?:\/\//, '')}<span className="external" aria-hidden="true">↗</span></a>{token.slice(clean.length)}</span>
-    }
     if (token.startsWith('**') && token.endsWith('**')) return <strong key={i}>{token.slice(2, -2)}</strong>
     return <span key={i}>{token}</span>
   })}</>
