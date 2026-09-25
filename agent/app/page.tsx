@@ -13,6 +13,15 @@ const EXAMPLES = [
   {label: 'TDS renumbering', question: 'Is 194J still the TDS section for professional fees?', icon: '04'},
 ]
 
+function citationMatchesSource(label: string, url: string) {
+  const is1961 = /(?:ITA|Income.tax Act)\s*1961/i.test(label)
+  const is2025 = /(?:ITA|Income.tax Act)\s*2025/i.test(label)
+  const path = decodeURIComponent(url).toLowerCase()
+  if (is1961 && /income[_-]?tax[_-]?act[_-]?2025|ita[_-]?2025/.test(path)) return false
+  if (is2025 && /income[_-]?tax[_-]?act[_-]?1961|ita[_-]?1961/.test(path)) return false
+  return true
+}
+
 function isSafeUrl(url: string) {
   try { return /^https?:$/.test(new URL(url).protocol) } catch { return false }
 }
@@ -21,7 +30,8 @@ function Inline({text}: {text: string}) {
   const tokens = text.split(/(\[[^\]]+\]\(https?:\/\/[^\s)]+\)|https?:\/\/[^\s<>]+|\*\*[^*]+\*\*)/g)
   return <>{tokens.map((token, i) => {
     const markdown = token.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/)
-    if (markdown && isSafeUrl(markdown[2])) return <a key={i} href={markdown[2]} target="_blank" rel="noopener noreferrer">{markdown[1]}<span className="external" aria-hidden="true">↗</span></a>
+    if (markdown && isSafeUrl(markdown[2]) && citationMatchesSource(markdown[1], markdown[2])) return <a key={i} href={markdown[2]} target="_blank" rel="noopener noreferrer">{markdown[1]}<span className="external" aria-hidden="true">↗</span></a>
+    if (markdown) return <span key={i}>{markdown[1]}</span>
     if (/^https?:\/\//.test(token)) {
       const clean = token.replace(/[.,;]+$/, '')
       if (isSafeUrl(clean)) return <span key={i}><a href={clean} target="_blank" rel="noopener noreferrer">{clean.replace(/^https?:\/\//, '')}<span className="external" aria-hidden="true">↗</span></a>{token.slice(clean.length)}</span>
